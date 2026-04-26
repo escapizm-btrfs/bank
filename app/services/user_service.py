@@ -13,7 +13,7 @@ from app.dependencies.sessiondep import SessionDep
 
 
 
-async def create_user(session:SessionDep, user:UserCreateSchema):
+'''async def create_user(session:SessionDep, user:UserCreateSchema):
     new_user = UserModel (
         email = user.email,
         name = user.name,
@@ -29,7 +29,7 @@ async def get_user(session: SessionDep, email: str):
     query = await session.execute(body_query)
 
     result = query.scalar_one_or_none()
-    return result
+    return result'''
 
 
 

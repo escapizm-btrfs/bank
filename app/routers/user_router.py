@@ -14,7 +14,7 @@ from app.dependencies.sessiondep import SessionDep
 
 router = APIRouter()
 
-@router.post("/users")
+'''@router.post("/users")
 async def create_user_router(session: SessionDep, user:UserCreateSchema):
     result = await create_user(session, user)
     return result
@@ -22,5 +22,5 @@ async def create_user_router(session: SessionDep, user:UserCreateSchema):
 @router.get("/users/{email}", response_model=UserReadSchema)
 async def get_user_router(session:SessionDep, email:str):
     result = await get_user(session, email)
-    return result
+    return result'''
     
