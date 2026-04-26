@@ -5,9 +5,9 @@ from alembic import context
 
 from app.core.database import Base
 
-from app.models.account_models import AccountModel
-from app.models.transaction_models import TransactionModel
-from app.models.user_models import UserModel
+from app.models.account_model import AccountModel
+from app.models.transaction_model import TransactionModel
+from app.models.user_model import UserModel
 
 
 

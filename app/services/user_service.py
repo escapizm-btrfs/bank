@@ -1,9 +1,9 @@
 from sqlalchemy import select
 
 
-from app.models.user_models import UserModel
-from app.schemas.user_schemas import UserCreateSchema
-from app.schemas.user_schemas import UserReadSchema
+from app.models.user_model import UserModel
+from app.schemas.user_schema import UserCreateSchema
+from app.schemas.user_schema import UserReadSchema
 from app.dependencies.sessiondep import SessionDep
 
 
