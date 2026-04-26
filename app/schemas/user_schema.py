@@ -6,7 +6,6 @@ class UserCreateSchema(BaseModel):
     password: str
 
 class UserReadSchema(BaseModel):
-    id: int
     email: str
     name: str
 
