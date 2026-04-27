@@ -6,7 +6,7 @@ from app.schemas.user_schema import UserReadSchema
 from app.models.user_model import UserModel
 from app.models.account_model import AccountModel
 
-from app.services.user_service import create_user, get_user
+ 
 
 from app.dependencies.sessiondep import SessionDep
 

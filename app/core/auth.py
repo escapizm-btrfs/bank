@@ -10,17 +10,17 @@ ALGORITHM = "HS256"
 ACCES_TOKEN_EXP = 30
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login") # Утилита для автоматического поиска JWT внутри заголовка
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login") # Утилита для автоматического поиска JWT внутри заголовка
 
 def create_access_token(payload:dict):
     encoded_jwt = jwt.encode(payload, SECRET_KEY, ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token : str = Depends(oauth2_scheme)):
-    try:
+def get_current_user(token : str = Depends(oauth2_scheme)): # В парамиетр передается токен из ручки
+    try: # отлов ошибки
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         sub = payload.get("sub")
-        if sub is None:
+        if sub is None: # Проверка на существ. токен
             raise HTTPException(status_code=401, detail="NonAuthorized")
     except JWTError:
         raise HTTPException(status_code=401, detail="NonAuthorized")

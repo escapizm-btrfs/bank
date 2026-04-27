@@ -10,7 +10,7 @@ from app.core.auth import create_access_token, get_current_user
 
 
 
-router = APIRouter
+router = APIRouter()
 
 @router.post("/registration")
 async def registration(session:SessionDep, user: UserCreateSchema):
@@ -31,6 +31,6 @@ async def login(session:SessionDep, email:str, password:str):
     query = await session.execute(body_query)
     user = query.scalar_one_or_none()
     if not verify_password(password, user.hashed_pswd):
-        raise HTTPException(status_code=401, detail="not currectly passw or email")
+        raise HTTPException(status_code=401, detail="not currectlyЁЁ passw or email")
     token = create_access_token({"sub":str(user.id), "exp":datetime.now() + timedelta(minutes=30)})
     return {"access_token": token}
