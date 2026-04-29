@@ -16,7 +16,7 @@ def create_access_token(payload:dict):
     encoded_jwt = jwt.encode(payload, SECRET_KEY, ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token : str = Depends(oauth2_scheme)): # В парамиетр передается токен из ручки
+def get_current_user(token : str = Depends(oauth2_scheme)): # В парамиетр передается токен из ручки и функция возвращает id пользователя из cookie
     try: # отлов ошибки
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         sub = payload.get("sub")
@@ -24,6 +24,7 @@ def get_current_user(token : str = Depends(oauth2_scheme)): # В парамие�
             raise HTTPException(status_code=401, detail="NonAuthorized")
     except JWTError:
         raise HTTPException(status_code=401, detail="NonAuthorized")
-    return sub
+    return int(sub)
     
 
+# email ami@gmail.com name escapism psswd 321321

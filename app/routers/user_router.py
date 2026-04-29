@@ -8,19 +8,11 @@ from app.models.account_model import AccountModel
 
  
 
-from app.dependencies.sessiondep import SessionDep
+from app.dependencies.Annotated import SessionDep
 
 
 
 router = APIRouter()
 
-'''@router.post("/users")
-async def create_user_router(session: SessionDep, user:UserCreateSchema):
-    result = await create_user(session, user)
-    return result
 
-@router.get("/users/{email}", response_model=UserReadSchema)
-async def get_user_router(session:SessionDep, email:str):
-    result = await get_user(session, email)
-    return result'''
     

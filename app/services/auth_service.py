@@ -1,10 +1,16 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 from datetime import datetime, timedelta
 
-from app.schemas.user_schema import UserCreateSchema
+
+
+from app.dependencies.Annotated import SessionDep
+
 from app.models.user_model import UserModel
-from app.dependencies.sessiondep import SessionDep
+
+from app.schemas.user_schema import UserCreateSchema
+
 from app.core.security import hash_password, verify_password
 from app.core.auth import create_access_token, get_current_user
 
@@ -26,11 +32,11 @@ async def registration(session:SessionDep, user: UserCreateSchema):
     
 
 @router.post("/login")
-async def login(session:SessionDep, email:str, password:str):
-    body_query = (select(UserModel).where(UserModel.email == email))
+async def login(session:SessionDep, form: OAuth2PasswordRequestForm = Depends()):
+    body_query = (select(UserModel).where(UserModel.email == form.username))
     query = await session.execute(body_query)
     user = query.scalar_one_or_none()
-    if not verify_password(password, user.hashed_pswd):
-        raise HTTPException(status_code=401, detail="not currectlyЁЁ passw or email")
+    if not user or not verify_password(form.password, user.hashed_pswd):
+        raise HTTPException(status_code=401, detail="not currectly passw or email")
     token = create_access_token({"sub":str(user.id), "exp":datetime.now() + timedelta(minutes=30)})
     return {"access_token": token}
