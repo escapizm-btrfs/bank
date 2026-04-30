@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlalchemy import text
 
-from app.routers.routes import main_router
+from app.routers.main_router import main_router
 from app.dependencies.Annotated import SessionDep
 
 

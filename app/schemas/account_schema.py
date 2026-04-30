@@ -1,8 +1,8 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
-from sqlalchemy import Numeric
+from decimal import Decimal
 
 
 
 class AccountCreateSchema(BaseModel):
-    balance: float
+    balance: Decimal
 
