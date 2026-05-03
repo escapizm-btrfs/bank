@@ -9,6 +9,6 @@ from app.services.transaction import transaction
 
 router = APIRouter()
 
-@router.post("/transaction")
+@router.post("/transactions")
 async def transaction_router(session:SessionDep, whoami_user:CurrentUserDep, transaction_schema:TransactionCreateSchema):
     return await transaction(session, whoami_user, transaction_schema)

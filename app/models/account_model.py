@@ -13,6 +13,7 @@ class AccountModel(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     balance: Mapped[Numeric] = mapped_column(Numeric(20, 2), default=0.00)
+    account_number: Mapped[int] = mapped_column(unique=True, nullable=True)
 
     account_owner: Mapped["UserModel"] = relationship(back_populates="accounts")
     
