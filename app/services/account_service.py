@@ -30,13 +30,21 @@ async def get_my_account(session:SessionDep, user:CurrentUserDep):
 
 
 async def get_accounts_by_email(session:SessionDep, user_email:str):
-    body_query = (
+    '''body_query = (
         select(UserModel)
         .where(UserModel.email == user_email)
         .options(selectinload(UserModel.accounts))
-        )
-    
-    query = await session.execute(body_query)
-    user = query.scalar_one_or_none()
+        )'''
 
-    return user.accounts
+    body_query = (
+        select(UserModel.email, AccountModel.id)
+        .join(UserModel, AccountModel.user_id == UserModel.id)
+        .where(UserModel.email == user_email)
+    )
+
+    query = await session.execute(body_query)
+
+    user = query.mappings().all()
+    return user
+
+    
