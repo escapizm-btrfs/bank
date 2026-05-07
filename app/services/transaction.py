@@ -13,7 +13,7 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
         
         accounts_query = await session.execute(
             select(AccountModel)
-            .where(AccountModel.id.in_([transaction_schema.from_account_id, transaction_schema.to_account_id]))
+            .where(AccountModel.account_number.in_([transaction_schema.from_account_number, transaction_schema.to_account_number]))
             .with_for_update()
         )
 
@@ -22,13 +22,11 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
         from_acc = None
         to_acc = None
         for acc in accounts:
-            if acc.id == transaction_schema.from_account_id:
+            if acc.account_number == transaction_schema.from_account_number:
                 from_acc = acc
                  
-            elif acc.id == transaction_schema.to_account_id:
+            elif acc.account_number == transaction_schema.to_account_number:
                 to_acc = acc
-                
-
         # проверка если нет счета
         # проверка если сумма перевода меньше баланса
         # проверка того ли пользователя счет
@@ -43,13 +41,12 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
         to_acc.balance += transaction_schema.amount 
 
         new_transaction = TransactionModel(
-            from_account_id = transaction_schema.from_account_id,
-            to_account_id = transaction_schema.to_account_id,
+            from_account_number = transaction_schema.from_account_number,
+            to_account_number = transaction_schema.to_account_number,
             amount = transaction_schema.amount
         )
 
         session.add(new_transaction)
-        await session.commit()
 
         return {"success": True}
 
