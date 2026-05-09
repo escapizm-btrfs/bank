@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.dependencies.Annotated import SessionDep, CurrentUserDep
-from app.schemas.account_schema import AccountCreateSchema
+from app.schemas.account_schema import AccountCreateSchema, AccountMyReadSchema, AccountPublicReadSchema
 
 from app.services.account_service import create_account, get_my_account, get_accounts_by_email
 
@@ -14,10 +14,10 @@ router = APIRouter()
 async def create_account_router(session:SessionDep, account: AccountCreateSchema,user:CurrentUserDep):
     return await create_account(session, account, user)
 
-@router.get("/accounts")
+@router.get("/accounts", response_model=list[AccountMyReadSchema])
 async def get_account_router(session:SessionDep, user:CurrentUserDep):
     return await get_my_account(session, user)
     
-@router.get("/accounts/{user_email}")
+@router.get("/accounts/{user_email}", response_model=list[AccountPublicReadSchema])
 async def get_account_by_email_router(session:SessionDep, user_email:str):
     return await get_accounts_by_email(session, user_email)

@@ -8,9 +8,13 @@ class AccountCreateSchema(BaseModel):
     
 
 class AccountPublicReadSchema(BaseModel):
-    account_number : str
     email : str
+    account_number : str
+
+    model_config = ConfigDict(from_attributes=True)
 
 class AccountMyReadSchema(BaseModel):
     balance: Decimal
     account_number: str
+
+    model_config = ConfigDict(from_attributes=True)
