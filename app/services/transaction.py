@@ -52,8 +52,16 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
 
 
 async def get_transactions_list(session:SessionDep, user:CurrentUserDep):
+    accounts_query = await session.execute(
+        select(AccountModel.account_number)
+        .where(AccountModel.user_id == user)
+    )
+    acc = accounts_query.scalars().all()
+
     body_query = (
-        select(TransactionModel).where(TransactionModel.from_account_id == user)
+        select(TransactionModel)
+        .where(TransactionModel.from_account_number.in_(acc))
+#        select(TransactionModel).where(TransactionModel.from_account_number == user)
     )
 
     query = await session.execute(body_query)
