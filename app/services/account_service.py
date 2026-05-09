@@ -49,7 +49,7 @@ async def get_accounts_by_email(session:SessionDep, user_email:str):
         )'''
 
     body_query = (
-        select(UserModel.email, AccountModel.id)
+        select(UserModel.email, AccountModel.account_number)
         .join(UserModel, AccountModel.user_id == UserModel.id)
         .where(UserModel.email == user_email)
     )
