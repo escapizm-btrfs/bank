@@ -60,7 +60,12 @@ async def get_transactions_list(session:SessionDep, user:CurrentUserDep):
 
     body_query = (
         select(TransactionModel)
-        .where(TransactionModel.from_account_number.in_(acc))
+        .where(
+            (TransactionModel.from_account_number.in_(acc)) 
+            |
+            (TransactionModel.to_account_number.in_(acc))
+        )
+        .order_by(TransactionModel.created_at.desc()) 
 #        select(TransactionModel).where(TransactionModel.from_account_number == user)
     )
 
