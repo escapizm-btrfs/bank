@@ -73,7 +73,7 @@ async def get_transactions_list(session:SessionDep, user:CurrentUserDep):
     result = query.scalars().all()
     return result
 
-async def get_received_or_sent(session:SessionDep, user:CurrentUserDep, transaction_type:str):
+async def get_received_or_sent_transactions(session:SessionDep, user:CurrentUserDep, transaction_type:str):
     get_account = await session.execute(
         select(AccountModel.account_number)
         .where(AccountModel.user_id == user)
