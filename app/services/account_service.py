@@ -11,23 +11,27 @@ from app.schemas.account_schema import AccountCreateSchema
 
 
 
-async def create_account(session:SessionDep, account:AccountCreateSchema, user:CurrentUserDep):
-    while True:
-        '''number = ""
-        for _ in range(16):
-            randint = random.randint(0, 9)
-            number += randint'''
-        
+async def create_account(session:SessionDep, account:AccountCreateSchema, current_user:CurrentUserDep):
+    user_query = await session.execute(
+        select(UserModel)
+        .where(UserModel.id == current_user)
+        .options(selectinload(UserModel.accounts))
+    )
+    user = user_query.scalar_one()
+    if len(user.accounts) >= 5:
+        raise HTTPException(status_code=400, detail="many accounts")
+    while True:        
         number = "".join(str(random.randint(0, 9)) for _ in range(16))
         new_account = AccountModel(
-                user_id = user,
+                user_id = current_user,
                 balance = account.balance,
                 account_number = number
             )
-        
-        check_account = await session.execute(select(AccountModel).where(AccountModel.account_number == number))
+        check_account = await session.execute(
+            select(AccountModel)
+            .where(AccountModel.account_number == number)
+        )
         account_exists = check_account.scalar_one_or_none()
-
         if not account_exists:
             session.add(new_account)
             await session.commit()
