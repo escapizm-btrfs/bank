@@ -66,6 +66,7 @@ async def get_transactions_list(session:SessionDep, user:CurrentUserDep):
             (TransactionModel.to_account_number.in_(acc))
         )
         .order_by(TransactionModel.created_at.desc()) 
+        .limit(10)
 #        select(TransactionModel).where(TransactionModel.from_account_number == user)
     )
 
@@ -77,6 +78,8 @@ async def get_received_or_sent_transactions(session:SessionDep, user:CurrentUser
     get_account = await session.execute(
         select(AccountModel.account_number)
         .where(AccountModel.user_id == user)
+        .order_by(TransactionModel.created_at.desc())
+        .limit(10)
     )
     acc = get_account.scalars().all()
     
@@ -85,6 +88,8 @@ async def get_received_or_sent_transactions(session:SessionDep, user:CurrentUser
         query = await session.execute(
             select(TransactionModel)
             .where(TransactionModel.from_account_number.in_(acc))
+            .order_by(TransactionModel.created_at.desc())
+            .limit(10)
         )
         
     if transaction_type == "sent":
@@ -92,14 +97,20 @@ async def get_received_or_sent_transactions(session:SessionDep, user:CurrentUser
         query = await session.execute(
             select(TransactionModel)
             .where(TransactionModel.to_account_number.in_(acc))
+            .order_by(TransactionModel.created_at.desc())
+            .limit(10)
         )
     else:
         #print("other")
         query = await session.execute(select(TransactionModel)
                 .where(
-                TransactionModel.from_account_number.in_(acc)
+                    TransactionModel.from_account_number.in_(acc)
                 |
-                TransactionModel.to_account_number.in_(acc)
-                ))
+                    TransactionModel.to_account_number.in_(acc)
+                )
+                .order_by(TransactionModel.created_at.desc())
+                .limit(10)
+                )
     result = query.scalars().all()
     return result
+                
