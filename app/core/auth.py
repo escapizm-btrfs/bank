@@ -5,9 +5,9 @@ from jose import JWTError, jwt
 
 
 
-SECRET_KEY = "4321NJKLDNFLS8312mkFDSAfFDqnjk012"
+SECRET_KEY = ""
 ALGORITHM = "HS256"
-ACCES_TOKEN_EXP = 30
+ACCESS_TOKEN_EXP = 30
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login") # Утилита для автоматического поиска JWT внутри заголовка

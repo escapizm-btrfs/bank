@@ -19,4 +19,3 @@ class UserModel(Base):
     hashed_pswd: Mapped[str]
 
     accounts: Mapped[List["AccountModel"]] = relationship(back_populates="account_owner")
-
