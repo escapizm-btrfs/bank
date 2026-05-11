@@ -41,7 +41,7 @@ async def registration(session:SessionDep, user: UserCreateSchema):
     return {"success":True}
     
 
-@router.post("/login")
+@router.post("/login") #post потому что выдается jwt_token
 async def login(session:SessionDep, form: OAuth2PasswordRequestForm = Depends()):
     body_query = (
         select(UserModel)
@@ -50,7 +50,6 @@ async def login(session:SessionDep, form: OAuth2PasswordRequestForm = Depends())
 
     query = await session.execute(body_query)
     user = query.scalar_one_or_none()
-
     if not user or not verify_password(form.password, user.hashed_pswd):
         raise HTTPException(status_code=401, detail="not currectly passw or email")
     
