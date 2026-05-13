@@ -15,3 +15,16 @@ app.include_router(main_router)
 async def test_conn(session:SessionDep):
     result = await session.execute(text("SELECT version()"))
     return result.scalars().all()
+
+
+'''
+DB_HOST = localhost
+DB_PORT = 5432
+DB_NAME = main_db
+DB_USER = escapizm
+DB_PASSWORD = 321321
+
+SECRET_KEY = 4321NJKLDNFLS8312mkFDSAfFDqnjk012
+ACCESS_TOKEN = 30
+ALGORITHM = HS256
+'''
