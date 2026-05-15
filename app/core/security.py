@@ -1,7 +1,6 @@
 from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
 
-import random
 
 
 password_context = PasswordHash(hashers=[BcryptHasher()])

@@ -18,7 +18,7 @@ from app.core.auth import create_access_token, get_current_user, ACCESS_TOKEN_EX
 
 router = APIRouter()
 
-@router.post("/registration")
+@router.post("/auth/registration")
 async def registration(session:SessionDep, user: UserCreateSchema):
     new_user = UserModel(
         name = user.name,
@@ -41,7 +41,7 @@ async def registration(session:SessionDep, user: UserCreateSchema):
     return {"success":True}
     
 
-@router.post("/login") #post потому что выдается jwt_token
+@router.post("/auth/login") #post потому что выдается jwt_token
 async def login(session:SessionDep, form: OAuth2PasswordRequestForm = Depends()):
     body_query = (
         select(UserModel)

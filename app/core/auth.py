@@ -12,7 +12,7 @@ ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXP = settings.ACCESS_TOKEN
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login") # Утилита для автоматического поиска JWT внутри заголовка
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login") # Утилита для автоматического поиска JWT внутри заголовка
 
 def create_access_token(payload:dict):
     encoded_jwt = jwt.encode(payload, SECRET_KEY, ALGORITHM)
