@@ -38,7 +38,10 @@ async def registration(session:SessionDep, user: UserCreateSchema):
     
     session.add(new_user)
     await session.commit()    
-    return new_user
+    return (
+        {"sucecss":True},
+        new_user
+    )
     
 
 @router.post("/auth/login") #post потому что выдается jwt_token

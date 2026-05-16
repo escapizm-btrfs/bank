@@ -36,7 +36,10 @@ async def create_account(session:SessionDep, account:AccountCreateSchema, curren
             session.add(new_account)
             await session.commit()
         
-            return {"message": "account_created"}
+            return (
+                {"success": True,},
+                new_account
+            )
         
 async def get_my_account(session:SessionDep, user:CurrentUserDep):
     body_query = select(AccountModel).where(AccountModel.user_id == user)
@@ -46,12 +49,6 @@ async def get_my_account(session:SessionDep, user:CurrentUserDep):
 
 
 async def get_accounts_by_email(session:SessionDep, user_email:str):
-    '''body_query = (
-        select(UserModel)
-        .where(UserModel.email == user_email)
-        .options(selectinload(UserModel.accounts))
-        )'''
-
     body_query = (
         select(UserModel.email, AccountModel.account_number)
         .join(UserModel, AccountModel.user_id == UserModel.id)

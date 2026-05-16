@@ -48,7 +48,10 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
 
         session.add(new_transaction)
 
-        return {"success": True}
+        return (
+            {"success": True},
+            new_transaction
+        )
 
 
 async def get_transactions_list(session:SessionDep, user:CurrentUserDep):
