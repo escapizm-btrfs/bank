@@ -29,9 +29,25 @@ async def test_registration():
 
         data = response.json()
 
+        print(data)
         assert response.status_code == 200
-        assert data["email"] == "brutdforce@gmail.com"
-        assert "id" in data
+        assert data[1]["email"] == "brutdforce@gmail.com"
+        assert "id" in data[1]
+
+
+
+        error_responce = await ac.post(
+            "/auth/registration",
+            json = {
+                "email": "brutdforce@gmail.com",
+                "name": "escapizm",
+                "password":"321321"
+            }
+        )
+
+        assert error_responce.status_code == 400
+
+        
          
 
         
