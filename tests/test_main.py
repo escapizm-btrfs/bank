@@ -1,16 +1,12 @@
 import pytest 
 from httpx import AsyncClient, ASGITransport
+from sqlalchemy import select
 
 
 from app.main import app
+from app.models.user_model import UserModel
+from app.dependencies.Annotated import SessionDep
 
-'''def test_print_routes():
-    print("\n--- ДОСТУПНЫЕ ЭНДПОИНТЫ В API ---")
-    for route in app.routes:
-        print(f"Путь: {route.path} | Методы: {route.methods}")
-    print("---------------------------------\n")
-    assert False  # Специально роняем тест, чтобы pytest показал print
-'''
 
 @pytest.mark.asyncio
 async def test_registration():
@@ -31,12 +27,11 @@ async def test_registration():
             }
         )
 
-        assert response.status_code == 200
-        
         data = response.json()
 
-        #print(data)
-        assert data["success"] == True
-        #assert "id" in data     
+        assert response.status_code == 200
+        assert data["email"] == "brutdforce@gmail.com"
+        assert "id" in data
+         
 
         
