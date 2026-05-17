@@ -70,23 +70,38 @@ async def test_login():
             }
         )
 
-        data_user = create_user.json()
+        #data_user = create_user.json()
 
         response = await ac.post(
-            "auth/login",
+            "/auth/login",
             data={
                 "username": "test_login@test.com",
                 "password": "test"
             }
         )
+
+        uncorrect_password_response = await ac.post(
+            "/auth/login",
+            data={
+                "username":"test_login@test.com",
+                "password":"test1"
+            }
+        )
+
         data_login = response.json()
 
         print(data_login)
+        #Проверка верной формы в логине
         assert response.status_code == 200
-
+        #Проверка создания токена в верной форме логина
         assert "access_token" in data_login
+        #проверка некорректнйо формы 
+        assert uncorrect_password_response.status_code == 401
 
 
 
-        
+
+
+
+
         
