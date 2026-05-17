@@ -133,9 +133,15 @@ async def test_account_created():
             json={"balance":100},
             headers={"Authorization": f"Bearer {token}"}
         )
+        acc_create_response_non_token = await ac.post(
+            "accounts",
+            json={"balance":3421}
+        )
+
 
         assert acc_create_response.status_code == 200
         
+        assert acc_create_response_non_token.status_code == 401
 
 
 
