@@ -8,51 +8,44 @@ from app.core.database import AsyncSessionLocal
 
 async def delete_all_tables():
     async with AsyncSessionLocal() as session:
-        #Выбирает пользователя с именем test_reg и достает его id 
+        #все пользователи с name == test_reg
         user_id_reg_query = await session.execute(
             select(UserModel.id).where(UserModel.name == "test_reg")
         )
-        user_id_reg = user_id_reg_query.scalar_one_or_none()
-        #Удаляет аккаунты с user_id == user_id_reg
-        await session.execute(
-            delete(AccountModel).where(AccountModel.user_id == user_id_reg)
-        )
-        #Выбирает пользователя с именем test_login и достает его id 
+        user_ids_reg = user_id_reg_query.scalars().all() 
+
+        #удалятся аккаунты
+        if user_ids_reg:  #если список пуст
+            await session.execute(
+                delete(AccountModel).where(AccountModel.user_id.in_(user_ids_reg))
+            )
+
+        # --- ОБРАБОТКА TEST_LOGIN ---
+        #id пользователей с name == test_login
         user_id_login_query = await session.execute(
             select(UserModel.id).where(UserModel.name == "test_login")
         )
-        user_id_login = user_id_login_query.scalar_one_or_none()
+        user_ids_login = user_id_login_query.scalars().all()
 
-        #Удаляет аккаунты c user_id == user_id_log
-        await session.execute(
-            delete(AccountModel).where(AccountModel.user_id == user_id_login)
-        )
+        #удаляется аккаунты через .in_
+        if user_ids_login:
+            await session.execute(
+                delete(AccountModel).where(AccountModel.user_id.in_(user_ids_login))
+            )
 
-
-
-
-
-
-        '''await session.execute(
-            delete(AccountModel).where(AccountModel)
-        )'''
-
-        #Удаление пользователей с name test_reg
+    
+        #удаление пользователей с name test_reg
         await session.execute(
             delete(UserModel).where(UserModel.name == "test_reg")
         )
-
         
-        #удалени пользовтеля с name test_login
+        #удаление пользователя с name test_login
         await session.execute(
             delete(UserModel).where(UserModel.name == "test_login")
         )
-        await session.execute(
-            delete(UserModel)
-        )
 
-        print("ddd")
 
         await session.commit()
+        print("ddd")
 
 asyncio.run(delete_all_tables())
