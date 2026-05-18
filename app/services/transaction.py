@@ -30,12 +30,15 @@ async def transaction(session:SessionDep, whoami_user:CurrentUserDep, transactio
         # проверка если нет счета
         # проверка если сумма перевода меньше баланса
         # проверка того ли пользователя счет
+        if transaction_schema.from_account_number == transaction_schema.to_account_number:
+            raise HTTPException(status_code=400, detail="its your active account") 
         if len(accounts) != 2:
             raise HTTPException(status_code=404, detail="account not found")
         if from_acc.user_id != whoami_user:
             raise HTTPException(status_code=400, detail="same account")
         if from_acc.balance < transaction_schema.amount:
             raise HTTPException(status_code=400, detail="enough balance")
+        
         
         from_acc.balance -= transaction_schema.amount
         to_acc.balance += transaction_schema.amount 

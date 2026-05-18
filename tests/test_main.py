@@ -217,10 +217,10 @@ async def test_transaciton():
         print(f"DATA1: : {create_account_response1.json}")
         print(f"DATA2: : {create_account_response2.json}")
         #получение json первого созданного аккуанта что б получить в дальнейшем его account_number (для переводов)
-        account_number_response1 = create_account_response1.json()
+        account_number_response1 = create_account_response1.json()[1]["account_number"]
 
         #получение json второго пользователя
-        account_number_response2 = create_account_response2.json()
+        account_number_response2 = create_account_response2.json()[1]["account_number"]
 
         #Получение json() первого аккаунта
         
@@ -268,6 +268,7 @@ async def test_transaciton():
 
 
         selfish_create_transaction_response = await ac.post(
+            "/transactions",
             json={
                 "from_account_number": str(account_number_response1),
                 "to_account_number": str(account_number_response1),
@@ -276,11 +277,13 @@ async def test_transaciton():
             headers={"Authorization": f"Bearer {token1}"}
         )
 
-        
+        print(account_number_response1)
+        print(selfish_create_transaction_response.json())
         assert selfish_create_transaction_response.status_code == 400
 
 
         not_enough_create_transaction_response = await ac.post(
+            "/transactions",
             json={
                 "from_account_number": str(account_number_response1),
                 "to_account_number": str(account_number_response2),
